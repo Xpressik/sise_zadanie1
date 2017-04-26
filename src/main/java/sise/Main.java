@@ -1,7 +1,8 @@
 package sise;
 
 
-import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Main {
 
@@ -12,6 +13,20 @@ public class Main {
         final String solutionFilename = args[3];
         final String additionalInformationFilename = args[4];
 
+        Jigsaw jigsaw = null;
+        try {
+            jigsaw = new Jigsaw(inputFilename, strategyProperties);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Stats stats = new Stats();
+        BFS bfs = new BFS(stats);
+        bfs.run(jigsaw);
 
+        try {
+            stats.saveStatsToFile(additionalInformationFilename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
