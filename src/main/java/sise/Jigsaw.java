@@ -1,6 +1,10 @@
 package sise;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Jigsaw {
@@ -10,21 +14,43 @@ public class Jigsaw {
     private int width;
     private int size;
     private int zeroPositionX;
-    private int getZeroPositionY;
+    private int zeroPositionY;
     private String directions;
+    private String solution;
 
+    public Jigsaw(Jigsaw j) {
 
-    public Jigsaw(String inputFilename, String directions) {
+        this.jigsawCurrentState = new int[j.height][];
+        for (int i = 0; i < j.jigsawCurrentState.length; ++i) {
+            this.jigsawCurrentState[i] = Arrays.copyOf(j.jigsawCurrentState[i], j.jigsawCurrentState.length);
+        }
+
+        this.height = j.height;
+        this.width = j.width;
+        this.size = j.size;
+        this.zeroPositionX = j.zeroPositionX;
+        this.zeroPositionY = j.zeroPositionY;
+        this.directions = j.directions;
+        this.solution = j.solution;
+    }
+
+    public Jigsaw(String inputFilename, String directions) throws FileNotFoundException {
+        solution = new String();
         this.directions = directions;
 
         readStateFromFile(inputFilename);
         findZeroPosition();
 
         size = width * height;
+
     }
 
-    private void readStateFromFile(String filename) {
-        Scanner scanner = new Scanner(filename);
+    public String getSolution() {
+        return solution;
+    }
+
+    private void readStateFromFile(String filename) throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File(filename));
 
         height = scanner.nextInt();
         width = scanner.nextInt();
@@ -35,6 +61,7 @@ public class Jigsaw {
                 jigsawCurrentState[i][j] = scanner.nextInt();
             }
         }
+        scanner.close();
     }
 
     private void findZeroPosition() {
@@ -42,10 +69,56 @@ public class Jigsaw {
             for (int j = 0; j < width; ++j) {
                 if (jigsawCurrentState[i][j] == 0) {
                     zeroPositionX = j;
-                    getZeroPositionY = i;
+                    zeroPositionY = i;
                 }
             }
         }
+    }
+
+    List<Jigsaw> getNeighbours(){
+        List<Jigsaw> neighbours = new ArrayList<>();
+        for (int i = 0; i < directions.length(); ++i){
+            int tmpX = zeroPositionX;
+            int tmpY = zeroPositionY;
+            Jigsaw jigsaw = new Jigsaw(this);
+            switch (directions.charAt(i)){
+                case 'L':
+                    if (tmpX > 0) {
+                        --tmpX;
+                    } else {
+                        continue;
+                    }
+                    break;
+                case 'R':
+                    if (tmpX + 1 < width) {
+                        ++tmpX;
+                    } else {
+                        continue;
+                    }
+                    break;
+                case 'U':
+                    if (tmpY > 0) {
+                        --tmpY;
+                    } else {
+                        continue;
+                    }
+                    break;
+                case 'D':
+                    if(tmpY + 1 < height) {
+                        tmpY++;
+                    } else {
+                        continue;
+                    }
+                    break;
+            }
+            jigsaw.jigsawCurrentState[zeroPositionY][zeroPositionX] = jigsaw.jigsawCurrentState[tmpY][tmpX];
+            jigsaw.jigsawCurrentState[tmpY][tmpX] = 0;
+            jigsaw.zeroPositionX = tmpX;
+            jigsaw.zeroPositionY = tmpY;
+            jigsaw.solution += directions.charAt(i);
+            neighbours.add(jigsaw);
+        }
+        return neighbours;
     }
 
     boolean isSolution() {
