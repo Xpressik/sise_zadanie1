@@ -3,7 +3,7 @@ package sise;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class BFS {
+public class BFS extends Algorithm{
 
     private final LinkedList<Jigsaw> queue;
     private final ArrayList<Jigsaw> visited;

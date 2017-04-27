@@ -59,26 +59,22 @@ public class Jigsaw {
         return this.solution;
     }
 
-    private int zeroPositionY;
-    private String directions;
-    private String solution;
-
-    public Jigsaw(Jigsaw j) {
-
-
-        this.jigsawCurrentState = new int[j.height][];
-        for (int i = 0; i < j.jigsawCurrentState.length; ++i) {
-            this.jigsawCurrentState[i] = Arrays.copyOf(j.jigsawCurrentState[i], j.jigsawCurrentState.length);
-        }
-
-        this.height = j.height;
-        this.width = j.width;
-        this.size = j.size;
-        this.zeroPositionX = j.zeroPositionX;
-        this.zeroPositionY = j.zeroPositionY;
-        this.directions = j.directions;
-        this.solution = j.solution;
-    }
+//    public Jigsaw(Jigsaw j) {
+//
+//
+//        this.jigsawCurrentState = new int[j.height][];
+//        for (int i = 0; i < j.jigsawCurrentState.length; ++i) {
+//            this.jigsawCurrentState[i] = Arrays.copyOf(j.jigsawCurrentState[i], j.jigsawCurrentState.length);
+//        }
+//
+//        this.height = j.height;
+//        this.width = j.width;
+//        this.size = j.size;
+//        this.zeroPositionX = j.zeroPositionX;
+//        this.zeroPositionY = j.zeroPositionY;
+//        this.directions = j.directions;
+//        this.solution = j.solution;
+//    }
 
     public Jigsaw(String inputFilename, String directions) throws FileNotFoundException {
         solution = new String();
@@ -104,9 +100,6 @@ public class Jigsaw {
         solution = jigsaw.getSolution();
     }
 
-    public String getSolution() {
-        return solution;
-    }
 
     private void readStateFromFile(String filename) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(filename));

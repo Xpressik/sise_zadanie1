@@ -7,23 +7,28 @@ package sise;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 /**
  *
  * @author macki
  */
-public class Astar {
+public class Astar extends Algorithm{
     
     private final PriorityQueue<Jigsaw> open;
-    private final ArrayList<Jigsaw> closed;
+    private final List<Jigsaw> closed;
 
     public Astar(Comparator<Jigsaw> hueristics) {
         open = new PriorityQueue<Jigsaw>(hueristics);
         closed = new ArrayList<Jigsaw>();
     }
     
-    public void AstarAlgorithm(Jigsaw jigsaw){
+    /**
+     *
+     * @param jigsaw
+     */
+    public void run(Jigsaw jigsaw) {
         open.add(jigsaw);
         while (open.size() > 0) {
             Jigsaw front = open.remove();
@@ -32,7 +37,7 @@ public class Astar {
                 return;
             }
             closed.add(front);
-            ArrayList<Jigsaw> neighbours = front.getNeighbours("UDLR");
+            List<Jigsaw> neighbours = front.getNeighbours();
             for (Jigsaw neighbour : neighbours) {
                 if (closed.contains(neighbour)) {
                     continue;

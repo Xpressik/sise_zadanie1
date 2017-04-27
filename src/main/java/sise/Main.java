@@ -20,8 +20,12 @@ public class Main {
             e.printStackTrace();
         }
         Stats stats = new Stats();
-        BFS bfs = new BFS(stats);
-        bfs.run(jigsaw);
+//        BFS bfs = new BFS(stats);
+        
+        Heuristics heuristics = new HammingHeuristics();
+        
+        Astar astar = new Astar(heuristics);
+        astar.run(jigsaw);
 
         try {
             stats.saveStatsToFile(additionalInformationFilename);
