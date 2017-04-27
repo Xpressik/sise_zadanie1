@@ -29,16 +29,25 @@ public class Astar extends Algorithm{
      * @param jigsaw
      */
     public void run(Jigsaw jigsaw) {
+        statistics.startTimer();
+        statistics.IncrementVisitedStates();
         open.add(jigsaw);
         while (open.size() > 0) {
             Jigsaw front = open.remove();
+            statistics.IncrementProcessedStates();
             String solution = front.getSolution();
+            if (solution.length() > statistics.getMaxRecursionDepth()) {
+                statistics.setMaxRecursionDepth(solution.length());
+            }
             if (front.isSolution()) {
+                statistics.stopTimer();
+                statistics.setSolution(solution);
                 return;
             }
             closed.add(front);
             List<Jigsaw> neighbours = front.getNeighbours();
             for (Jigsaw neighbour : neighbours) {
+                statistics.IncrementVisitedStates();
                 if (closed.contains(neighbour)) {
                     continue;
                 }

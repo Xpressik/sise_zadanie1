@@ -33,6 +33,10 @@ class Stats {
     public void setProcessedStates(long processedStates) {
         this.processedStates = processedStates;
     }
+    
+    public void IncrementProcessedStates() {
+        this.processedStates++;
+    }
 
     public long getVisitedStates() {
         return visitedStates;
@@ -40,6 +44,10 @@ class Stats {
 
     public void setVisitedStates(long visitedStates) {
         this.visitedStates = visitedStates;
+    }
+    
+    public void IncrementVisitedStates() {
+        this.visitedStates++;
     }
 
     public long getMaxRecursionDepth() {
