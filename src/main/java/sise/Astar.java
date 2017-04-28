@@ -52,7 +52,6 @@ public class Astar {
                     continue;
                 }
                 if (!open.contains(neighbour)) {
-                    // statistics.incrementVisitedCount();
                     open.add(neighbour);
                 } else {
                     boolean b = open.removeIf((Jigsaw j) -> {
