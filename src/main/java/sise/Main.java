@@ -2,6 +2,7 @@ package sise;
 
 
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Main {
@@ -20,13 +21,39 @@ public class Main {
             e.printStackTrace();
         }
         Stats stats = new Stats();
-        BFS bfs = new BFS(stats);
-        bfs.run(jigsaw);
+        switch (strategyAcronym){
+            case "bfs":
+                BFS bfs = new BFS(stats);
+                bfs.run(jigsaw);
+                break;
+            case "dfs":
+                DFS dfs = new DFS(stats);
+                dfs.dfs(jigsaw);
+                break;
+            case "astr":
+
+                break;
+        }
+
 
         try {
             stats.saveStatsToFile(additionalInformationFilename);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(solutionFilename);
+            fileWriter.write(stats.getSolution().length() + "\n" + stats.getSolution());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

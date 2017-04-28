@@ -2,10 +2,7 @@ package sise;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Jigsaw {
 
@@ -131,5 +128,20 @@ public class Jigsaw {
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Jigsaw other = (Jigsaw) obj;
+        return Arrays.deepEquals(this.jigsawCurrentState, other.jigsawCurrentState);
     }
 }
