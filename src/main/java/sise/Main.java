@@ -31,10 +31,19 @@ public class Main {
                 dfs.dfs(jigsaw);
                 break;
             case "astr":
-
+                Astar astar;
+                switch (strategyProperties){
+                    case "hamm":
+                        astar = new Astar(new HammingHeuristics(), stats);
+                        astar.AstarAlgorithm(jigsaw);
+                        break;
+                    case "manh":
+                        astar = new Astar(new ManhattanHeuristics(), stats);
+                        astar.AstarAlgorithm(jigsaw);
+                        break;
+                }
                 break;
         }
-
 
         try {
             stats.saveStatsToFile(additionalInformationFilename);

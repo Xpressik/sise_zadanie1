@@ -7,61 +7,15 @@ import java.util.*;
 public class Jigsaw {
 
     private int jigsawCurrentState[][];
-    public int[][] getJigsawCurrentState() {
-        return jigsawCurrentState;
-    }
-    
     private int height;
-    public int getHeight() {
-        return height;
-    }
-    
-    private int size;
-    public int getSize() {
-        return size;
-    }
-    
     private int width;
-    public int getWidth() {
-        return width;
-    }
-
+    private int size;
     private int zeroPositionX;
-
-    public void setZeroPositionX(int zeroPositionX) {
-        this.zeroPositionX = zeroPositionX;
-    }
-    public int getZeroPositionX() {
-        return zeroPositionX;
-    }
-    
-    private int zeroPositionY;
-    public void setZeroPositionY(int zeroPositionY) {
-        this.zeroPositionY = zeroPositionY;
-    }
-    public int getZeroPositionY() {
-        return zeroPositionY;
-    }
-    
-    private String directions;
-    public String getDirections() {
-        return directions;
-    }
-
-    private String solution;   
-    public void setSolution(String solution) {
-        this.solution = solution;
-    }
-    String getSolution() {
-        return this.solution;
-    }
-
     private int zeroPositionY;
     private String directions;
     private String solution;
 
     public Jigsaw(Jigsaw j) {
-
 
         this.jigsawCurrentState = new int[j.height][];
         for (int i = 0; i < j.jigsawCurrentState.length; ++i) {
@@ -86,19 +40,6 @@ public class Jigsaw {
 
         size = width * height;
 
-    }
-    
-    public Jigsaw(Jigsaw jigsaw) {
-        zeroPositionX = jigsaw.getZeroPositionX();
-        zeroPositionY = jigsaw.getZeroPositionY();
-
-        int height = jigsaw.getHeight();
-        jigsawCurrentState = new int[height][];
-        for (int i = 0; i < height; ++i) {
-            jigsawCurrentState[i] = jigsaw.getJigsawCurrentState()[i].clone();
-        }
-
-        solution = jigsaw.getSolution();
     }
 
     public String getSolution() {
@@ -187,46 +128,6 @@ public class Jigsaw {
             }
         }
         return true;
-    } 
-    
-        public Jigsaw getNeighbours(char direction) {
-        Jigsaw jigsaw = new Jigsaw(this);
-        int puzzleEmptyX = zeroPositionX;
-        int puzzleEmptyY = zeroPositionY;
-        switch (direction) {
-            case 'U':
-                --puzzleEmptyY;
-                if (puzzleEmptyY < 0) {
-                    return null;
-                }
-                break;
-            case 'D':
-                ++puzzleEmptyY;
-                if (puzzleEmptyY >= jigsaw.getHeight()) {
-                    return null;
-                }
-                break;
-            case 'L':
-                --puzzleEmptyX;
-                if (puzzleEmptyX < 0) {
-                    return null;
-                }
-                break;
-            case 'R':
-                ++puzzleEmptyX;
-                if (puzzleEmptyX >= jigsaw.getWidth()) {
-                    return null;
-                }
-                break;
-            default:
-                return null;
-        }
-        jigsaw.getJigsawCurrentState()[zeroPositionY][zeroPositionX] = jigsawCurrentState[puzzleEmptyY][puzzleEmptyX];
-        jigsaw.getJigsawCurrentState()[puzzleEmptyY][puzzleEmptyX] = 0;
-        jigsaw.setZeroPositionX(puzzleEmptyX);
-        jigsaw.setZeroPositionY(puzzleEmptyY);
-        jigsaw.setSolution(jigsaw.getSolution() + direction);
-        return jigsaw;
     }
 
     @Override
@@ -242,5 +143,21 @@ public class Jigsaw {
         }
         final Jigsaw other = (Jigsaw) obj;
         return Arrays.deepEquals(this.jigsawCurrentState, other.jigsawCurrentState);
+    }
+
+    public int[][] getJigsawCurrentState() {
+        return jigsawCurrentState;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setDirections(String directions) {
+        this.directions = directions;
     }
 }

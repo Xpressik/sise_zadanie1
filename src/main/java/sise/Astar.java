@@ -7,6 +7,7 @@ package sise;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 /**
@@ -17,23 +18,36 @@ public class Astar {
     
     private final PriorityQueue<Jigsaw> open;
     private final ArrayList<Jigsaw> closed;
+    private final Stats stats;
 
-    public Astar(Comparator<Jigsaw> hueristics) {
-        open = new PriorityQueue<Jigsaw>(hueristics);
-        closed = new ArrayList<Jigsaw>();
+    public Astar(Comparator<Jigsaw> hueristics, Stats stats) {
+        open = new PriorityQueue<>(hueristics);
+        closed = new ArrayList<>();
+        this.stats = stats;
     }
     
     public void AstarAlgorithm(Jigsaw jigsaw){
+        jigsaw.setDirections("UDLR");
+        stats.startTimer();
+        stats.setVisitedStates(stats.getVisitedStates() + 1);
         open.add(jigsaw);
         while (open.size() > 0) {
             Jigsaw front = open.remove();
+            stats.setProcessedStates(stats.getProcessedStates() + 1);
             String solution = front.getSolution();
+            if (solution.length() > stats.getMaxRecursionDepth()) {
+                stats.setMaxRecursionDepth(solution.length());
+            }
+
             if (front.isSolution()) {
+                stats.stopTimer();
+                stats.setSolution(solution);
                 return;
             }
             closed.add(front);
-            ArrayList<Jigsaw> neighbours = front.getNeighbours("UDLR");
+            List<Jigsaw> neighbours = front.getNeighbours();
             for (Jigsaw neighbour : neighbours) {
+                stats.setVisitedStates(stats.getVisitedStates() + 1);
                 if (closed.contains(neighbour)) {
                     continue;
                 }
