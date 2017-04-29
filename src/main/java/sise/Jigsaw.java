@@ -145,6 +145,16 @@ public class Jigsaw {
         return Arrays.deepEquals(this.jigsawCurrentState, other.jigsawCurrentState);
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Arrays.deepHashCode(this.jigsawCurrentState);
+        hash = 97 * hash + this.zeroPositionX;
+        hash = 97 * hash + this.zeroPositionY;
+        return hash;
+    }
+
+
     public int[][] getJigsawCurrentState() {
         return jigsawCurrentState;
     }

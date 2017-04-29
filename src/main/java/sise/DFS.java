@@ -8,26 +8,23 @@ import java.util.*;
 public class DFS {
 
     private final static int MAX_RECURSION_DEPTH = 20;
-    private final Stack<Jigsaw> S;
-    private final ArrayList<Jigsaw> visitedArrayList;
+    private final LinkedHashSet<Jigsaw> visited;
+    private final LinkedHashSet<Jigsaw> processed;
     private Stats stats;
 
     public DFS(Stats stats) {
         this.stats = stats;
-        this.S = new Stack<>();
-        this.visitedArrayList = new ArrayList<>();
+        this.visited = new LinkedHashSet<>();
+        this.processed = new LinkedHashSet<>();
     }
-
-
-
 
 
     public void dfs(Jigsaw jigsaw){
         stats.startTimer();
-        S.push(jigsaw);
-        while (!S.isEmpty()) {
-            final Jigsaw v = S.pop();
+        visited.add(jigsaw);
+        while (!visited.isEmpty()) {
 
+            final Jigsaw v = removeLastElement(visited);
             if (v.isSolution()){
                 stats.stopTimer();
                 stats.setSolution(v.getSolution());
@@ -37,7 +34,7 @@ public class DFS {
                 continue;
             }
 
-            visitedArrayList.add(v);
+            processed.add(v);
             stats.setProcessedStates(stats.getProcessedStates() + 1);
             List<Jigsaw> neighbours = v.getNeighbours();
             Collections.reverse(neighbours);
@@ -52,13 +49,19 @@ public class DFS {
                     stats.setSolution(neighbour.getSolution());
                     return;
                 }
-                else if (visitedArrayList.contains(neighbour) || S.contains(neighbour)) {
+                else if (processed.contains(neighbour) || visited.contains(neighbour)) {
                     continue;
                 }
-                S.push(neighbour);
-                visitedArrayList.add(neighbour);
+                visited.add(neighbour);
                 stats.setVisitedStates(stats.getVisitedStates() + 1);
             }
         }
     }
+
+    private Jigsaw removeLastElement(LinkedHashSet<Jigsaw> set) {
+        final Jigsaw top = (Jigsaw) set.toArray()[set.size() - 1];
+        set.remove(set.toArray()[set.size() - 1]);
+        return top;
+    }
+
 }
