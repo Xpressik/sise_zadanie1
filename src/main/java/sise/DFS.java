@@ -22,20 +22,23 @@ public class DFS {
     public void dfs(Jigsaw jigsaw){
         stats.startTimer();
         visited.add(jigsaw);
+        stats.setVisitedStates(stats.getVisitedStates() + 1);
+
         while (!visited.isEmpty()) {
 
             final Jigsaw v = removeLastElement(visited);
-            if (v.isSolution()){
-                stats.stopTimer();
-                stats.setSolution(v.getSolution());
-                return;
-            }
+//            if (v.isSolution()){
+//                stats.stopTimer();
+//                stats.setSolution(v.getSolution());
+//                return;
+//            }
             if (v.getSolution().length() >= MAX_RECURSION_DEPTH) {
                 continue;
             }
 
             processed.add(v);
             stats.setProcessedStates(stats.getProcessedStates() + 1);
+
             List<Jigsaw> neighbours = v.getNeighbours();
             Collections.reverse(neighbours);
 

@@ -1,6 +1,8 @@
 package sise;
 
 
+import sun.awt.Symbol;
+
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -53,7 +55,11 @@ public class Main {
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(solutionFilename);
-            fileWriter.write(stats.getSolution().length() + "\n" + stats.getSolution());
+            try {
+                fileWriter.write(stats.getSolution().length() + "\n" + stats.getSolution());
+            } catch(NullPointerException e){
+                fileWriter.write("0");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
